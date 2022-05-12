@@ -11,9 +11,9 @@ import { Content } from "./components/Content";
 import {Box, Container, useColorModeValue} from "@chakra-ui/react";
 import { DashboardPage } from "./components/DashboardPage/DashboardPage";
 import { ExercisePage } from "./components/ExerciseLogPage/ExercisePage";
-import { FoodLogPage } from "./components/FoodLogPage/FoodLogPage";
+import { NutritionMainPage } from "./components/Nutrition/NutritionMainPage";
 import { SettingsPage } from "./components/SettingsPage/SettingsPage";
-
+import { LogMeal } from "./components/Nutrition/Meal/NewMeal";
 export const App = () => (
         <Box as="section" height="100vh" overflowY="auto" bgColor={useColorModeValue("brand.400","brand.100")}>
         
@@ -22,8 +22,14 @@ export const App = () => (
             <Routes>
                 <Route path="/" element={<AppWindow />}>
                     <Route index element={<DashboardPage />} />
+
+                    <Route path="nutrition" >
+                        <Route index element={<NutritionMainPage /> }/>
+                        <Route path="log-meal" element={<LogMeal />} />
+
+                    </Route>
+
                     <Route path="/exercise-log" element={<ExercisePage />} />
-                    <Route path="/food-log" element={<FoodLogPage />} />
                     <Route path="/settings" element={<SettingsPage />} />
                 </Route>
             </Routes>
