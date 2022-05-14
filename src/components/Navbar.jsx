@@ -20,21 +20,21 @@ import { FiHelpCircle, FiSearch, FiSettings } from 'react-icons/fi'
 import { Sidebar } from './Sidebar'
 import { ToggleButton } from './ToggleButton'
 
-import { GiBrandyBottle, GiMeal, GiWeightLiftingUp } from "react-icons/gi";
+import { GiBrandyBottle, GiConsoleController, GiMeal, GiWeightLiftingUp } from "react-icons/gi";
 import { ColorModeSwitcher } from './ColorModeSwitcher'
 import { NavLink } from 'react-router-dom'
+import { UserContext } from './Providers'
 export const Navbar = () => {
     
+    const user = React.useContext(UserContext)
+
     const isDesktop = useBreakpointValue({
         base: false,
         lg: true,
     })
-
     const { isOpen, onToggle, onClose } = useDisclosure()
     return (
         <Box as="nav"  >
-
-
             <Box size='container.lg' bgColor={useColorModeValue("brand.200", "brand.200")}
                 px={{
                     base: '2',
@@ -52,7 +52,7 @@ export const Navbar = () => {
                             <ButtonGroup variant="ghost-on-accent" color="brand.500" spacing="1">
                                 <NavLink to="/"><Button aria-current="page">Dashboard</Button></NavLink>
                                 <NavLink to="/exercise-log"><Button>Exercise Log</Button></NavLink>
-                                    <NavLink to="/food-log"><Button>Food Log</Button></NavLink>
+                                    <NavLink to="/nutrition"><Button>Nutrition</Button></NavLink>
                             </ButtonGroup>
                         )}
                     </HStack>
@@ -63,7 +63,7 @@ export const Navbar = () => {
                                 <NavLink to="/settings"><IconButton icon={<FiSettings fontSize="1.25rem" />} aria-label="Settings" /></NavLink>
                                 <IconButton icon={<FiHelpCircle fontSize="1.25rem" />} aria-label="Help Center" />
                             </ButtonGroup>
-                            <Avatar  boxSize="10" name="Joe Maurer" src="../img/profile.png" />
+                            <Avatar  boxSize="10" name="Joe Maurer" src={user.picture} />
                         </HStack>
                     ) : (
                         <>

@@ -21,13 +21,7 @@ export const ExercisePage = () => (
                     <Heading size={useBreakpointValue({ base: 'md', lg: 'xl', })} fontWeight="medium">
                         Exercise Log
                     </Heading>
-                    <Text color="muted">Physical activity log</Text>
-                </Stack>
-                <Stack direction="row" spacing="3">
-                    <Button variant="secondary" leftIcon={<FiDownloadCloud fontSize="1.25rem" />}>
-                        Download
-                    </Button>
-                    <Button variant="primary">Create</Button>
+                    <Text color="muted">Log your physical activity</Text>
                 </Stack>
             </Stack>
 

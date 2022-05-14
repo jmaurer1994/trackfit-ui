@@ -23,12 +23,7 @@ export const SettingsPage = () => (
                 </Heading>
                 <Text color="muted">Personalize your experience.</Text>
             </Stack>
-            <Stack direction="row" spacing="3">
-                <Button variant="secondary" leftIcon={<FiDownloadCloud fontSize="1.25rem" />}>
-                Download
-                </Button>
-                <Button variant="primary">Create</Button>
-            </Stack>
+          
         </Stack>
         <Cws />
     </Stack>

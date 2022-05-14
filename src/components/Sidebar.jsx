@@ -54,7 +54,7 @@ export const Sidebar = () => (
                     <Stack color={useColorModeValue("brand.500", "brand.300")}  spacing="1">
                         <NavLink to="/"><NavButton label="Dashboard" icon={FiBarChart2} aria-current="page" /></NavLink>
                         <NavLink to="/exercise-log"><NavButton label="Exercise Log" icon={GiWeightLiftingUp} /></NavLink>
-                        <NavLink to="/food-log"><NavButton label="Food Log" icon={GiMeal} /></NavLink>
+                        <NavLink to="/nutrition"><NavButton label="Nutrition" icon={GiMeal} /></NavLink>
                     </Stack>
                 </Stack>
                 <Stack color={useColorModeValue("brand.500", "brand.300")} spacing={{ base: '5', sm: '6', }}>
