@@ -47,7 +47,12 @@ const sizes = {
     },
 }
 
+const components = {
+    components: {
+    }
+}
+
 // 3. extend the theme
-const theme = extendTheme({ config, colors, sizes })
+const theme = extendTheme({ config, colors, sizes, components })
 
 export default theme

@@ -308,28 +308,31 @@ const WorkoutForm = ({ workoutToEdit, workouts, setWorkouts, setFitnessPageState
                     <FormControl id="name">
                         <FormLabel>Name</FormLabel>
                         <InputGroup>
-                            <Input onChange={handleOnNameChange} defaultValue={name} />
+                            <Input  variant='filled' onChange={handleOnNameChange} defaultValue={name} />
                         </InputGroup>
                     </FormControl>
                     <FormControl id="type">
                         <FormLabel>Type</FormLabel>
                         <RadioGroup onChange={setType} value={type} >
                             <Stack spacing={5} direction='row'>
-                                <Radio colorScheme='green' value={"activity"}>
+                                <Radio borderColor={'gray.300'} colorScheme={'blue'} value={"activity"}>
                                     Activity
                                 </Radio>
-                                <Radio colorScheme='red' value={"exercise"}>
+                                <Radio borderColor={'gray.300'} colorScheme={'blue'} value={"exercise"}>
                                     Exercise
                                 </Radio>
                             </Stack>
                         </RadioGroup>
                     </FormControl>
                     {
-                        type === 'activity' ? <ActivityType startTime={startTime} setStartTime={setStartTime} endTime={endTime} setEndTime={setEndTime} /> : <ExerciseType numSets={numSets} setNumSets={setNumSets} sets={sets} setSets={setSets} />
+                        type === 'activity' ? <ActivityType startTime={startTime} setStartTime={setStartTime} endTime={endTime} setEndTime={setEndTime} /> : null 
+                    }
+                    {
+                        type === 'exercise' ? <ExerciseType numSets={numSets} setNumSets={setNumSets} sets={sets} setSets={setSets} /> : null 
                     }
                     <FormControl id="notes">
                         <FormLabel>Notes</FormLabel>
-                        <Textarea onChange={handleOnNotesChange} rows={3} resize="none" defaultValue={notes} />
+                        <Textarea variant='filled' onChange={handleOnNotesChange} rows={3} resize="none" defaultValue={notes} />
                         <FormHelperText color="subtle">Notes.</FormHelperText>
                     </FormControl>
                 </Stack>
@@ -370,7 +373,7 @@ const SetItem = ({ item, index }) => {
             <SimpleGrid columns={2} spacing={1}>
                 <FormControl id="reps">
                     <InputGroup>
-                        <Input onChange={onChangeReps} defaultValue={item.reps} />
+                        <Input variant='filled' onChange={onChangeReps} defaultValue={item.reps} />
                         <InputRightAddon>reps</InputRightAddon>
                     </InputGroup>
                 </FormControl>
@@ -378,7 +381,7 @@ const SetItem = ({ item, index }) => {
 
                 <FormControl id="weight">
                     <InputGroup>
-                        <Input onChange={onChangeWeight} defaultValue={item.weight} />
+                        <Input variant='filled' onChange={onChangeWeight} defaultValue={item.weight} />
                         <InputRightAddon>lbs</InputRightAddon>
                     </InputGroup>
                 </FormControl>
@@ -443,7 +446,7 @@ const ExerciseType = ({ numSets, setNumSets, sets, setSets }) => {
             <FormControl id="sets">
                 <FormLabel>Sets</FormLabel>
                 <InputGroup>
-                    <Input onChange={setsOnChange} defaultValue={numSets} />
+                    <Input variant='filled' onChange={setsOnChange} defaultValue={numSets} />
                     <InputRightAddon>sets</InputRightAddon>
                 </InputGroup>
             </FormControl>
@@ -469,7 +472,7 @@ const ActivityType = ({ startTime, endTime, setStartTime, setEndTime }) => {
             <FormControl id="start_time">
                 <FormLabel>Start Time</FormLabel>
                 <InputGroup>
-                    <Input onChange={handleOnChangeStart} defaultValue={startTime} />
+                    <Input variant='filled' onChange={handleOnChangeStart} defaultValue={startTime} />
                 </InputGroup>
             </FormControl>
 
@@ -477,7 +480,7 @@ const ActivityType = ({ startTime, endTime, setStartTime, setEndTime }) => {
             <FormControl id="end_time">
                 <FormLabel>End Time</FormLabel>
                 <InputGroup>
-                    <Input onChange={handleOnChangeEnd} defaultValue={endTime} />
+                    <Input variant='filled' onChange={handleOnChangeEnd} defaultValue={endTime} />
                 </InputGroup>
             </FormControl>
         </SimpleGrid>
