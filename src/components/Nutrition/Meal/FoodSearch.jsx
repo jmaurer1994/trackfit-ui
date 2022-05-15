@@ -147,7 +147,7 @@ export const FoodSearch = ({ foodArr, setFoodArr, searchInput, setSearchInput })
                 <SearchBox APIData={APIData} setAPIData={setAPIData} searchInput={searchInput} setSearchInput={setSearchInput} setShowSearchResults={setShowSearchResults} />
             </Stack>
             <Box hidden={!showSearchResults}>
-                <FoodResults APIData={APIData} foodArr={foodArr} setFoodArr={setFoodArr}/>
+                <FoodResults APIData={APIData} foodArr={foodArr} setFoodArr={setFoodArr} setSearchInput={setSearchInput}/>
             </Box>
         </Stack>
     );

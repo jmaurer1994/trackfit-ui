@@ -25,14 +25,21 @@ import {
     TableCaption,
     TableContainer,
 } from '@chakra-ui/react'
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { FoodSearch } from './FoodSearch'
 import { Dropzone } from './Dropzone'
+import { NutritionDatabaseContext } from '../../Providers';
 //https://api.nal.usda.gov/fdc/v1/foods/search?query=apple&pageSize=2&api_key=PtjYJDD1Jo4zamWGQhUi8aDrD33DSzpI57ca2kiK
 export const NewMeal = () => {
     const [foodArr, setFoodArr] = useState([]);
     const [searchInput, setSearchInput] = useState('');
+    const ndb = useContext(NutritionDatabaseContext);
 
+    const onClickSave = () => {
+       ndb.getData()
+    }
+
+    
     return (
         <Container >
             <Stack spacing="5">
@@ -52,7 +59,7 @@ export const NewMeal = () => {
                             Log a recent meal.
                         </Text>
                     </Box>
-                    <Button variant="primary" alignSelf="start">
+                    <Button onClick={onClickSave} variant="primary" alignSelf="start">
                         Save
                     </Button>
                 </Stack>
@@ -68,6 +75,9 @@ export const NewMeal = () => {
 }
 
 const FoodList = ({foodArr}) => {
+
+    console.log("Food arr", foodArr);
+
     return(
     <TableContainer>
         <Table variant='striped' colorScheme='teal'>

@@ -8,10 +8,12 @@ import {
     Text,
     useColorModeValue,
 } from '@chakra-ui/react'
-import * as React from 'react'
+import { useEffect, useState, useRef, createContext, useContext } from "react";
+
 import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
-import { meals } from '../data'
+import { NutritionDatabaseContext } from '../../Providers';
+
 
 
 export const Cwab = () => {
@@ -20,6 +22,14 @@ export const Cwab = () => {
         navigate('new-meal')
     }
 
+    const ndb = useContext(NutritionDatabaseContext);
+
+    const[meals, setMeals] = useState([]);
+
+    useEffect(() => {
+        if(ndb){
+        }
+    }, [ndb]);
 
     return (
         <Box as="section" py={{ base: '4', md: '8' }}>

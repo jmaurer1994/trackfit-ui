@@ -51,7 +51,7 @@ export const Navbar = () => {
                         {isDesktop && (
                             <ButtonGroup variant="ghost-on-accent" color="brand.500" spacing="1">
                                 <NavLink to="/"><Button aria-current="page">Dashboard</Button></NavLink>
-                                <NavLink to="/exercise-log"><Button>Exercise Log</Button></NavLink>
+                                <NavLink to="/fitness"><Button>Fitness</Button></NavLink>
                                     <NavLink to="/nutrition"><Button>Nutrition</Button></NavLink>
                             </ButtonGroup>
                         )}
@@ -63,7 +63,7 @@ export const Navbar = () => {
                                 <NavLink to="/settings"><IconButton icon={<FiSettings fontSize="1.25rem" />} aria-label="Settings" /></NavLink>
                                 <IconButton icon={<FiHelpCircle fontSize="1.25rem" />} aria-label="Help Center" />
                             </ButtonGroup>
-                            <Avatar  boxSize="10" name="Joe Maurer" src={user.picture} />
+                            <Avatar  boxSize="10" name={user.given_name} src={user.picture} />
                         </HStack>
                     ) : (
                         <>
