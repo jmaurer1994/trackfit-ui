@@ -22,7 +22,6 @@ export class Database {
                         fileId: this.fileId,
                         alt: 'media'
                     }).then((res) => {
-                        console.log(res)
                         if (res.body !== "") {
                             this.data = JSON.parse(res.body)
                         }

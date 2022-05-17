@@ -223,7 +223,7 @@ const DatabaseProvider = ({ authorized, setAppInitialized, children }) => {
                 let match = false
                 files.forEach((file) => {
 
-                    //gapi.client.drive.files.delete({ fileId: file.id }).then((res) => console.log(res))
+                  //  gapi.client.drive.files.delete({ fileId: file.id }).then((res) => console.log(res))
                     if (file.name === "trackfit-config.json") {
                         console.log("found config")
                         match = true
@@ -253,7 +253,7 @@ const DatabaseProvider = ({ authorized, setAppInitialized, children }) => {
                         }
 
                         createFileWithJSONContent(res.result.id, contents, (res) => {
-                            console.log(res)
+                            setConfigFile(res.id)
                         })
                     });
                 }

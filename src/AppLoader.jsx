@@ -253,7 +253,9 @@ const Landing = () => {
     return (
         <Stack p={0} alignItems={'center'}>
             <PublicNavbar />
-            <Text align='center'>Welcome to Trackfit! Click the button below to login.</Text>
+            <Text align='center'>Welcome to Trackfit! </Text>
+            <Text align='center'>TrackFit is a nutrition and fitness tracking application built in Javascript. TrackFit utilizes the Google Drive API service to house user data on their Drive and runs completely client side after the initial request to TrackFit's servers.</Text>
+            <Text align='center'>Click the button below to login.</Text>
             <GoogleButton />
         </Stack>
 

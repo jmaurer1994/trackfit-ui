@@ -24,7 +24,7 @@ import {
     InputRightAddon,
     SimpleGrid,
 } from '@chakra-ui/react'
-import { FiEdit2, FiTrash2 } from 'react-icons/fi'
+import { FiEdit, FiEdit2, FiTrash, FiTrash2 } from 'react-icons/fi'
 import React, { useState, useEffect, useContext, Fragment } from "react";
 import axios from 'axios';
 import { FitnessDatabaseContext } from '../Providers'
@@ -40,7 +40,7 @@ import { FitnessDatabaseContext } from '../Providers'
 export const FitnessPage = () => {
     const [workouts, setWorkouts] = useState([])
     const [fitnessPageState, setFitnessPageState] = useState('default')
-    const [workoutToEdit, setWorkoutToEdit] = useState()
+    const [workoutToEdit, setWorkoutToEdit] = useState(-1)
     const fdb = useContext(FitnessDatabaseContext)
     const [saveNeeded, setSaveNeeded] = useState(false)
     //add for prev state
@@ -67,7 +67,7 @@ export const FitnessPage = () => {
             )
         } else if (fitnessPageState === "edit") {
             return (
-                <WorkoutForm workoutToEdit={workoutToEdit} workouts={workouts} setWorkouts={setWorkouts} setSaveNeeded={setSaveNeeded} setFitnessPageState={setFitnessPageState} />
+                <WorkoutForm workoutToEdit={workoutToEdit} setWorkoutToEdit={setWorkoutToEdit} workouts={workouts} setWorkouts={setWorkouts} setSaveNeeded={setSaveNeeded} setFitnessPageState={setFitnessPageState} />
             )
         } else {
             return (
@@ -98,14 +98,24 @@ export const FitnessPage = () => {
 
 const WorkoutTable = ({ workouts, setWorkouts, setFitnessPageState, setWorkoutToEdit, setSaveNeeded }) => {
 
-    const handleOnClickEditWorkout = (e) => {
-        console.log(e.target.value)
-        console.log(workouts[e.target.value])
-        setWorkoutToEdit(e.target.value)
+    const handleOnClickEditWorkout = (index) => {
+        console.log("editing: ", workouts[index])
+        setWorkoutToEdit(index)
         setFitnessPageState("edit")
     }
-    const handleOnClickDeleteWorkout = (e) => {
-        setWorkouts(workouts.filter((workout, index) => index === e.target.value))
+    const handleOnClickDeleteWorkout = (index) => {
+        const newArr = []
+
+        console.log(index)
+        for (let i = 0; i < workouts.length; i++) {
+            if (i !== index) {
+                newArr.push(workouts[i])
+            }
+        }
+        console.log('new arr', newArr)
+
+        setWorkouts(newArr)
+        setSaveNeeded(true)
     }
 
     const onClickAddWorkout = (e) => {
@@ -141,7 +151,7 @@ const WorkoutTable = ({ workouts, setWorkouts, setFitnessPageState, setWorkoutTo
                                 {item.name}
                             </Text>
                             <Text>
-                                {item.time_logged}
+                                {new Date(item.time_logged).toLocaleString('en-US', { timeZone: 'UTC' })}
                             </Text>
                             <Text color="muted">{item.type}</Text>
                             <Text color="muted">{item.notes}</Text>
@@ -157,18 +167,20 @@ const WorkoutTable = ({ workouts, setWorkouts, setFitnessPageState, setWorkoutTo
                                 sm: '1',
                             }}
                         >
-                            <Button
-                                onClick={handleOnClickEditWorkout}
+                            <IconButton
+                                onClick={() => handleOnClickEditWorkout(id)}
                                 value={id}
                                 variant="ghost"
                                 aria-label="Edit workout"
-                            >Edit</Button>
-                            <Button
-                                onClick={handleOnClickDeleteWorkout}
+                                icon={<FiEdit />}
+                            >Edit</IconButton>
+                            <IconButton
+                                onClick={() => handleOnClickDeleteWorkout(id)}
                                 value={id}
                                 variant="ghost"
                                 aria-label="Delete workout"
-                            >Delete</Button>
+                                icon={<FiTrash />}
+                            >Delete</IconButton>
                         </Stack>
                     </Stack>))
             }
@@ -177,7 +189,7 @@ const WorkoutTable = ({ workouts, setWorkouts, setFitnessPageState, setWorkoutTo
 
     )
 }
-const WorkoutForm = ({ workoutToEdit, workouts, setWorkouts, setFitnessPageState, setSaveNeeded }) => {
+const WorkoutForm = ({ workoutToEdit, setWorkoutToEdit, workouts, setWorkouts, setFitnessPageState, setSaveNeeded }) => {
     const [type, setType] = useState()
     const [sets, setSets] = useState([])
     const [numSets, setNumSets] = useState();
@@ -188,9 +200,10 @@ const WorkoutForm = ({ workoutToEdit, workouts, setWorkouts, setFitnessPageState
     let workout = {}
 
     useEffect(() => {
-        if (workoutToEdit) {
+        if (workoutToEdit >= 0) {
             workout = workouts[workoutToEdit]
 
+            console.log("edit", workout)
             setType(workout.type)
             setSets(workout.sets)
             setName(workout.name)
@@ -210,20 +223,15 @@ const WorkoutForm = ({ workoutToEdit, workouts, setWorkouts, setFitnessPageState
             workout.start_time = startTime
             workout.end_time = endTime
 
-            try{
-            
-            const { data } = await axios.post('http://flip2.engr.oregonstate.edu:5000/api/timeDelta', {
-                startTime: startTime,
-                endTime: endTime
-            }
-            )
+            try {
 
-
-
+                const { data } = await axios.get('http://api.maurer.gg/flip_proxy/api/timeDelta?startTime=' + startTime +'&endTime=' +endTime)
                 console.log(data)
-        } catch (err){
-            console.log(err)
-        }
+                workout.duration = data
+
+            } catch (err) {
+                console.log("err")
+            }
 
 
         } else if (type === "exercise") {
@@ -249,6 +257,7 @@ const WorkoutForm = ({ workoutToEdit, workouts, setWorkouts, setFitnessPageState
 
         setFitnessPageState("default")
     }
+
     const handleOnClickCancel = () => {
         setFitnessPageState("default")
     }
@@ -308,7 +317,7 @@ const WorkoutForm = ({ workoutToEdit, workouts, setWorkouts, setFitnessPageState
                     <FormControl id="name">
                         <FormLabel>Name</FormLabel>
                         <InputGroup>
-                            <Input  variant='filled' onChange={handleOnNameChange} defaultValue={name} />
+                            <Input variant='filled' onChange={handleOnNameChange} defaultValue={name} />
                         </InputGroup>
                     </FormControl>
                     <FormControl id="type">
@@ -325,10 +334,10 @@ const WorkoutForm = ({ workoutToEdit, workouts, setWorkouts, setFitnessPageState
                         </RadioGroup>
                     </FormControl>
                     {
-                        type === 'activity' ? <ActivityType startTime={startTime} setStartTime={setStartTime} endTime={endTime} setEndTime={setEndTime} /> : null 
+                        type === 'activity' ? <ActivityType startTime={startTime} setStartTime={setStartTime} endTime={endTime} setEndTime={setEndTime} /> : null
                     }
                     {
-                        type === 'exercise' ? <ExerciseType numSets={numSets} setNumSets={setNumSets} sets={sets} setSets={setSets} /> : null 
+                        type === 'exercise' ? <ExerciseType numSets={numSets} setNumSets={setNumSets} sets={sets} setSets={setSets} /> : null
                     }
                     <FormControl id="notes">
                         <FormLabel>Notes</FormLabel>
