@@ -225,7 +225,7 @@ const WorkoutForm = ({ workoutToEdit, setWorkoutToEdit, workouts, setWorkouts, s
 
             try {
 
-                const { data } = await axios.get('http://api.maurer.gg/flip_proxy/api/timeDelta?startTime=' + startTime +'&endTime=' +endTime)
+                const { data } = await axios.get('https://timetrack.maurer.gg/api/timeDelta?startTime=' + startTime +'&endTime=' + endTime)
                 console.log(data)
                 workout.duration = data
 
