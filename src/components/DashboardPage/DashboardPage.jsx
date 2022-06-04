@@ -10,6 +10,7 @@ import {
   useBreakpointValue,
   useColorModeValue,
   IconButton,
+  StackDivider,
 } from '@chakra-ui/react';
 import React, {useEffect, useState, useContext} from 'react';
 import { FiEdit } from 'react-icons/fi';
@@ -77,7 +78,7 @@ export const DashboardPage = () => {
   }, []);
 
   return (
-    <Container maxW={{ base: 'container.sm', sm: 'container.md' }}>
+    <Container  maxW={{ base: 'container.sm', sm: 'container.md' }}>
       <Stack spacing={{ base: '4', lg: '6' }}>
         <Stack
           spacing="1"

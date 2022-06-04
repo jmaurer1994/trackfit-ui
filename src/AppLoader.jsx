@@ -55,16 +55,6 @@ export const AppLoader = () => {
     }
   }, [appInitialized]);
 
-  const AppWindow = () => (
-    <Box
-      pt={{ base: '8', lg: '12' }}
-      pb={{ base: '12', lg: '24' }}
-      minW="100vw"
-    >
-      <Outlet />
-    </Box>
-  );
-
   const AuthGuard = () => {
     if (authenticated) {
       if (authorized) {
@@ -95,9 +85,8 @@ export const AppLoader = () => {
     >
       <Box
         as="section"
-        height="100vh"
-        overflowY="auto"
         bgColor={useColorModeValue('brand.400', 'brand.100')}
+        color={useColorModeValue('brand.100', 'brand.400')}
       >
         <AuthGuard />
       </Box>
@@ -142,8 +131,7 @@ const PublicWindow = () => (
   <Box
     pt={{ base: '0', lg: '0' }}
     pb={{ base: '12', lg: '24' }}
-    minW="100vw"
-    h="calc(100vh)"
+    minH="calc(100vh)"
   >
     <Center p={2} backgroundColor={useColorModeValue('brand.100', 'brand.200')}>
       <Image width="12rem" src="../img/logo.png" />
@@ -674,8 +662,6 @@ const Authorizing = () => {
     <Box
       pt={{ base: '0', lg: '0' }}
       pb={{ base: '12', lg: '24' }}
-      minW="100vw"
-      h="calc(100vh)"
     >
       <Center
         p={2}
@@ -714,8 +700,6 @@ const Initializing = () => {
     <Box
       pt={{ base: '0', lg: '0' }}
       pb={{ base: '12', lg: '24' }}
-      minW="100vw"
-      h="calc(100vh)"
     >
       <Center
         p={2}
