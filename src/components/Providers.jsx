@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, createContext, useContext } from "react";
 import useInterval from '@use-it/interval';
 import jwt_decode from "jwt-decode";
 import { GoogleApiProvider, useGoogleApi } from 'react-gapi'
-import { Button } from "@chakra-ui/react";
+import { chakra } from "@chakra-ui/react";
 import { Database } from "../Database";
 
 
@@ -352,11 +352,12 @@ export const GoogleButton = () => {
         try {
             google.accounts.id.renderButton(divRef.current, {
                 type: "standard",
+                size: "large",
             });
         } catch (error) {
             console.log({ error })
         }
     }, [google, divRef.current]);
 
-    return <div ref={divRef} />;
+    return <chakra.div ref={divRef} />;
 }
