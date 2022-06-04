@@ -23,11 +23,13 @@ import {
     Textarea,
     InputRightAddon,
     SimpleGrid,
+    Select,
 } from '@chakra-ui/react'
 import { FiEdit, FiEdit2, FiTrash, FiTrash2 } from 'react-icons/fi'
 import React, { useState, useEffect, useContext, Fragment } from "react";
 import axios from 'axios';
 import { FitnessDatabaseContext } from '../Providers'
+import TimePicker from 'react-time-picker/dist/TimePicker';
 //an activity ihas...
 //name
 //date logged
@@ -150,11 +152,12 @@ const WorkoutTable = ({ workouts, setWorkouts, setFitnessPageState, setWorkoutTo
                             <Text color="emphasized" fontWeight="medium">
                                 {item.name}
                             </Text>
-                            <Text>
-                                {new Date(item.time_logged).toLocaleString('en-US', { timeZone: 'UTC' })}
-                            </Text>
                             <Text color="muted">{item.type}</Text>
-                            <Text color="muted">{item.notes}</Text>
+                            <Text>
+                                Logged: {new Date(item.time_logged).toLocaleString('en-US', { timeZone: 'UTC' })}
+                            </Text>
+                            <Text color="muted">Notes: {item.notes}</Text>
+                            <Text>Duration: {item.duration?.hours} hours {item.duration?.minutes} minutes</Text>
                         </Stack>
 
                         <Stack
@@ -224,13 +227,13 @@ const WorkoutForm = ({ workoutToEdit, setWorkoutToEdit, workouts, setWorkouts, s
             workout.end_time = endTime
 
             try {
-
-                const { data } = await axios.get('https://timetrack.maurer.gg/api/timeDelta?startTime=' + startTime +'&endTime=' + endTime)
-                console.log(data)
-                workout.duration = data
+                console.log("Sending GET request to: https://trackfit.maurer.gg/api/timeDelta?startTime=" + Math.floor(startTime/1000) + '&endTime=' + Math.floor(endTime/1000))
+                const { data } = await axios.get('https://trackfit.maurer.gg/api/timeDelta?startTime=' + Math.floor(startTime/1000) + '&endTime=' + Math.floor(endTime/1000))
+                console.log('data:',data)
+                workout.duration = {hours:data.timeDelta.hours, minutes: data.timeDelta.minutes}
 
             } catch (err) {
-                console.log("err")
+                console.log("err",err)
             }
 
 
@@ -434,12 +437,13 @@ const SetsCreator = ({ sets, setSets, numSets }) => {
         }
     }, [numSets]);
 
-
     return (
         <Stack>
-            {
-                (sets?.map ? sets.map((item, id) => <SetItem item={item} key={id} index={id} />) : null)
-            }
+            <>
+                {
+                    (sets?.map ? sets.map((item, id) => <SetItem item={item} key={id} index={id} />) : null)
+                }
+            </>
         </Stack>
     )
 }
@@ -480,18 +484,66 @@ const ActivityType = ({ startTime, endTime, setStartTime, setEndTime }) => {
         <SimpleGrid columns={2} spacing={1}>
             <FormControl id="start_time">
                 <FormLabel>Start Time</FormLabel>
-                <InputGroup>
-                    <Input variant='filled' onChange={handleOnChangeStart} defaultValue={startTime} />
-                </InputGroup>
+                <TimeInput setTime={setStartTime} />
             </FormControl>
 
 
             <FormControl id="end_time">
                 <FormLabel>End Time</FormLabel>
-                <InputGroup>
-                    <Input variant='filled' onChange={handleOnChangeEnd} defaultValue={endTime} />
-                </InputGroup>
+                <TimeInput setTime={setEndTime}/>
             </FormControl>
         </SimpleGrid>
     )
+}
+
+const TimeInput = ({ setTime }) => {
+    const [hours, setHour] = useState('');
+    const [minutes, setMinutes] = useState('');
+
+    const onHourChange = (e) => {
+        setHour(e.target.value)
+    }
+    const onMinuteChange = (e) => {
+        setMinutes(e.target.value)
+    }
+
+    useEffect(() => {
+        let newTime = new Date(); 
+        newTime.setHours(hours);
+        newTime.setMinutes(minutes);
+        newTime.setSeconds(0);
+
+        setTime(newTime.getTime())
+    }, [hours,minutes]);
+
+
+    return(
+        <Stack direction='row'>
+            <Select onChange={onHourChange} placeholder='HH'>
+                <HourOptions />
+            </Select>
+
+            <Select onChange={onMinuteChange} placeholder='MM'>
+                <MinuteOptions />
+            </Select>
+        </Stack>
+    )
+}
+
+const HourOptions = ({ }) => {
+    let arr = []
+    for (let i = 1; i <= 24; i++) {
+        arr.push(<option key={i} value={i}>{i}</option>)
+    }
+
+    return arr
+}
+
+const MinuteOptions = ({}) => {
+    let arr = []
+    for (let i = 0; i < 60; i++) {
+        arr.push(<option key={i} value={i}>{i}</option>)
+    }
+
+    return arr
 }
